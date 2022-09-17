@@ -68,9 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _getLocation() async {
     try {
-      BlocProvider.of<UserBloc>(context).add(Connect());
+      // BlocProvider.of<UserBloc>(context).add(Connect());
 
       Position position = await _determinePosition();
+      print(position.latitude);
     } catch (e) {
       print(e);
     }
@@ -124,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: AppColors.error,
                       size: 30,
                     ),
-                    onPressed: () => print("marker"),
+                    onPressed: () => {_getLocation(), print("marker")},
                   ),
                 ),
               ],

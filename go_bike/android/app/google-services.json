@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "838500530996",
+    "project_id": "go-bike-utf",
+    "storage_bucket": "go-bike-utf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:838500530996:android:6d33c0cbb0f98157280361",
+        "android_client_info": {
+          "package_name": "com.ramberapps.go_bike"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "838500530996-odcfivi8ht233u94bavok9qrhc455bnk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFENJs3OrdlsY7u7-Ifn2EQeNZpmz5PHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "838500530996-odcfivi8ht233u94bavok9qrhc455bnk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "838500530996-np1vvah0e08li6af3j2qba1re16kcsec.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ramberapps.gobike"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

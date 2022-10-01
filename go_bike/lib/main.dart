@@ -8,20 +8,23 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
+import 'package:go_bike/firebase_options.dart';
 
 import 'package:go_bike/cubit/bottom_nav_cubit.dart';
 import 'package:go_bike/cubit/theme_cubit.dart';
 import 'package:go_bike/utils/routes/routes.dart';
+import 'package:go_bike/config/notifications/config.dart';
 
 void main() async {
-  /// Initialize packages
+  // Initialize packages
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   await dotenv.load(fileName: ".env");
+  // Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  requestAndRegisterNotification();
   // Storage
   Hive.initFlutter();
 

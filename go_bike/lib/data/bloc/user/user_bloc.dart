@@ -31,5 +31,28 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       //   emit(RegistersErrorState(e));
       // }
     });
+    on<ParkBike>((event, emit) async {
+      try {
+        _mqttRepository.connect();
+      } catch (e) {
+        print(e);
+      }
+      // try {
+      //   if (event.page == 1) {
+      //     emit(RegistersLoadingState());
+      //   } else {
+      //     emit(RegistersPaginatedLoadingState());
+      //   }
+      //   final registers = await _repository.fetchRegisters(event.page);
+      //   if (event.page == 1) {
+      //     _registers = registers;
+      //   } else {
+      //     _registers.addAll(registers);
+      //   }
+      //   emit(RegistersLoadedState(_registers));
+      // } catch (e) {
+      //   emit(RegistersErrorState(e));
+      // }
+    });
   }
 }

@@ -11,3 +11,8 @@ class Connect extends UserEvent {
   @override
   List<Object> get props => [];
 }
+
+class ParkBike extends UserEvent {
+  @override
+  List<Object> get props => [];
+}

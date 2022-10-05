@@ -27,8 +27,8 @@ export class BikeService {
         }
     }
 
-    public async toggleBikeParking(value: string) {
-        await client.publish('bike/park', `${value}`);
+    public async toggleBikeParking(bikeId: string, value: string) {
+        await client.publish('/bike/park', `${value}`);
     }
 
     public async getBikeLastLocation(bikeId: string) {

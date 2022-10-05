@@ -8,11 +8,12 @@ import { BikeService } from '../service';
 
 export class BikeController {
     public static async toggleBikeParking (req: Request, res: Response) {
+        const bikeId = req.params.id as string;
         const { value } = req.body;
 
         const service = new BikeService();
 
-        await service.toggleBikeParking(value);
+        await service.toggleBikeParking(bikeId, value);
 
         return res.status(StatusCodes.CREATED).end();
     }

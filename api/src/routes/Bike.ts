@@ -5,6 +5,6 @@ const router = Router();
 
 router.get('/bike/:id/lastLocation', BikeController.getLastLocation);
 
-router.post('/bike/park', BikeController.toggleBikeParking);
+router.post('/bike/:id/park', BikeController.toggleBikeParking);
 
 export default router;

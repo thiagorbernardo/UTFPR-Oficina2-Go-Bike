@@ -3,7 +3,7 @@ import {
     StatusCodes,
 } from 'http-status-codes';
 
-import { BikeService, BikeTopics } from '../service';
+import { BikeService, BikeTopics, BIKE_MESSAGES } from '../service';
 
 
 export class BikeController {
@@ -54,7 +54,7 @@ export class BikeController {
             await service.saveBikeLocation(lat, lng, velocity, precision);
         } else if (topic === BikeTopics.WARNING) {
             console.log(Boolean(value));
-            await service.sendNotificationToDevice();
+            await service.sendNotificationToDevice(BIKE_MESSAGES.WARNING_MOVING_BIKE_TITLE, BIKE_MESSAGES.WARNING_MOVING_BIKE_BODY);
         }
     }
 }

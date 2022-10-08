@@ -9,17 +9,23 @@ export enum BikeTopics {
     WARNING = 'bike/warning'
 }
 
+export const BIKE_MESSAGES = {
+    WARNING_MOVING_BIKE_TITLE: "⚠️Sua bicicleta saiu do lugar em que foi estacionada!⚠️",
+    WARNING_MOVING_BIKE_BODY: "Sua bicicleta saiu do lugar em que estava antes.",
+    PARKED_BIKE_TITLE: "Bicicleta estacionada com sucesso!🆗",
+}
+
 const BIKE_ID = '123'
 export class BikeService {
     private locationRepository = new LocationRepository();
     private messagingService = admin.messaging();
 
-    public async sendNotificationToDevice() {
+    public async sendNotificationToDevice(title: string, body?: string) {
         try {
             const message = await this.messagingService.sendToTopic("bike_owner", {
                 notification: {
-                    title: "⚠️Sua bicicleta saiu do lugar em que foi estacionada!⚠️",
-                    body: "Sua bicicleta saiu do lugar em que estava antes."
+                    title: title,
+                    body: body || "",
                 },
             });
             console.log(message);
@@ -30,6 +36,7 @@ export class BikeService {
 
     public async toggleBikeParking(bikeId: string, value: boolean) {
         await client.publish(BikeTopics.PARK, `${value}`);
+        await this.sendNotificationToDevice(BIKE_MESSAGES.PARKED_BIKE_TITLE);
     }
 
     public async getBikeLastLocation(bikeId: string): Promise<ILocation | null> {

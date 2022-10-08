@@ -1,47 +1,51 @@
-import { StatusCodes } from "http-status-codes";
-import { v4 as uuidv4 } from 'uuid';
-import { sign } from 'jsonwebtoken';
 import admin from "firebase-admin";
 
-// import AppError from "../error/AppError";
-// import { UsersRepository } from '../repositories';
-
+import { ILocation, LocationRepository } from '../repositories';
 import { client } from '../index';
 
+export enum BikeTopics {
+    PARK = 'bike/park',
+    LOCATION = 'bike/location',
+    WARNING = 'bike/warning'
+}
+
+const BIKE_ID = '123'
 export class BikeService {
-    // private userRepository = new UsersRepository();
+    private locationRepository = new LocationRepository();
     private messagingService = admin.messaging();
 
-    private async sendNotificationToDevice() {
+    public async sendNotificationToDevice() {
         try {
-            const messagingService = admin.messaging();
-    
-            await messagingService.sendToTopic("bike_owner", {
+            const message = await this.messagingService.sendToTopic("bike_owner", {
                 notification: {
-                    title: "⚠️Sua bicicleta está sendo roubada!⚠️",
+                    title: "⚠️Sua bicicleta saiu do lugar em que foi estacionada!⚠️",
                     body: "Sua bicicleta saiu do lugar em que estava antes."
                 },
-            })
+            });
+            console.log(message);
         } catch (error) {
             console.error(error)
         }
     }
 
-    public async toggleBikeParking(bikeId: string, value: string) {
-        await client.publish('/bike/park', `${value}`);
+    public async toggleBikeParking(bikeId: string, value: boolean) {
+        await client.publish(BikeTopics.PARK, `${value}`);
     }
 
-    public async getBikeLastLocation(bikeId: string) {
-        // const user = await this.userRepository.findByEmail(email);
+    public async getBikeLastLocation(bikeId: string): Promise<ILocation | null> {
+        const location = await this.locationRepository.findLatest(bikeId);
 
-        // if (user) {
-        //     throw new AppError(AuthErrors.EMAIL_ALREADY_EXISTS, StatusCodes.BAD_REQUEST);
-        // }
+        return location;
+    }
 
-        // const _id = uuidv4();
-
-        // await this.userRepository.createUser({ _id, name, email, password });
-
-        // return _id;
+    public async saveBikeLocation(lat: string, lng: string, velocity: string, precision: string) {
+        console.log(lat, lng, velocity, precision);
+        await this.locationRepository.createRegister({
+            bikeId: BIKE_ID,
+            latitude: parseFloat(lat),
+            longitude: parseFloat(lng),
+            velocity: parseFloat(velocity),
+            precision: parseFloat(precision)
+        });
     }
 }

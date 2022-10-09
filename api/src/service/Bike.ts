@@ -35,6 +35,7 @@ export class BikeService {
     }
 
     public async toggleBikeParking(bikeId: string, value: boolean) {
+        console.log("Parking", bikeId, value);
         await client.publish(BikeTopics.PARK, `${value}`);
         await this.sendNotificationToDevice(BIKE_MESSAGES.PARKED_BIKE_TITLE);
     }

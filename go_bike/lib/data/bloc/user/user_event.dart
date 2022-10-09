@@ -16,3 +16,8 @@ class ParkBike extends UserEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetLastlocation extends UserEvent {
+  @override
+  List<Object> get props => [];
+}

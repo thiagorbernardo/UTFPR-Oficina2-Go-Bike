@@ -1,58 +1,32 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:go_bike/data/repository/mqtt_repository.dart';
+import 'package:go_bike/data/repository/api_provider.dart';
+import 'package:go_bike/models/bike_location.dart';
+import 'package:latlong2/latlong.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  final _mqttRepository = MqttRepository();
+  final _repository = ApiProvider();
   UserBloc() : super(UserInitial()) {
-    on<Connect>((event, emit) async {
+    on<GetLastlocation>((event, emit) async {
       try {
-        _mqttRepository.connect();
+        emit(GetLastLocationLoadingState());
+        final location = await _repository.getLastLocation("123");
+        emit(GetLastLocationLoadedState(location));
       } catch (e) {
-        print(e);
+        emit(GetLastLocationErrorState());
       }
-      // try {
-      //   if (event.page == 1) {
-      //     emit(RegistersLoadingState());
-      //   } else {
-      //     emit(RegistersPaginatedLoadingState());
-      //   }
-      //   final registers = await _repository.fetchRegisters(event.page);
-      //   if (event.page == 1) {
-      //     _registers = registers;
-      //   } else {
-      //     _registers.addAll(registers);
-      //   }
-      //   emit(RegistersLoadedState(_registers));
-      // } catch (e) {
-      //   emit(RegistersErrorState(e));
-      // }
     });
     on<ParkBike>((event, emit) async {
       try {
-        _mqttRepository.connect();
+        emit(ParkBikeLoadingState());
+        await _repository.parkBike("123");
+        emit(ParkBikeLoadedState());
       } catch (e) {
-        print(e);
+        emit(ParkBikeErrorState());
       }
-      // try {
-      //   if (event.page == 1) {
-      //     emit(RegistersLoadingState());
-      //   } else {
-      //     emit(RegistersPaginatedLoadingState());
-      //   }
-      //   final registers = await _repository.fetchRegisters(event.page);
-      //   if (event.page == 1) {
-      //     _registers = registers;
-      //   } else {
-      //     _registers.addAll(registers);
-      //   }
-      //   emit(RegistersLoadedState(_registers));
-      // } catch (e) {
-      //   emit(RegistersErrorState(e));
-      // }
     });
   }
 }

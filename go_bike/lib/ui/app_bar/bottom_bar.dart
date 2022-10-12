@@ -41,9 +41,9 @@ class BottomBar extends StatelessWidget {
                   title: const Text('Home'),
                 ),
                 SalomonBottomBarItem(
-                  icon: const Icon(FontAwesomeIcons.userGroup),
-                  activeIcon: const Icon(FontAwesomeIcons.userGroup),
-                  title: const Text('Friends'),
+                  icon: const Icon(FontAwesomeIcons.gear),
+                  activeIcon: const Icon(FontAwesomeIcons.gear),
+                  title: const Text('Configurações'),
                 ),
               ],
             ),

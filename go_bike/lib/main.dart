@@ -26,7 +26,7 @@ void main() async {
   );
   requestAndRegisterNotification();
   // Storage
-  Hive.initFlutter();
+  await Hive.initFlutter();
 
   final storage = await HydratedStorage.build(
     storageDirectory: await getApplicationSupportDirectory(),
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
+          context.read<ThemeCubit>().subscribeIfNeeded();
           return MaterialApp(
             title: 'Go Bike',
             theme: state.themeData,

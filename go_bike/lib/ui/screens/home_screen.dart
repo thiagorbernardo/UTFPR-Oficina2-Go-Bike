@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:go_bike/cubit/theme_cubit.dart';
 import 'package:go_bike/data/bloc/user/user_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
@@ -294,8 +295,24 @@ class ColumnRowWidget extends StatelessWidget {
                           title: "Estacionar",
                           color: Colors.deepPurple.shade800,
                           icon: FontAwesomeIcons.squareParking,
-                          onTap: () => BlocProvider.of<UserBloc>(context)
-                              .add(ParkBike()),
+                          onTap: context.read<ThemeCubit>().state.isOwner
+                              ? () => {
+                                    BlocProvider.of<UserBloc>(context)
+                                        .add(ParkBike()),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        backgroundColor: AppColors.secondary,
+                                        content: Text(
+                                          'Sucesso!',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 15,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  }
+                              : null,
                         ),
                         const Spacer(),
                         ClickableCard(
@@ -431,6 +448,7 @@ class ClickableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isOwner = onTap != null;
     return InkWell(
       onTap: onTap,
       child: Card(
@@ -446,7 +464,7 @@ class ClickableCard extends StatelessWidget {
               children: [
                 Icon(
                   icon,
-                  color: color,
+                  color: isOwner ? color : Colors.grey,
                   size: 35,
                 ),
                 const SizedBox(
@@ -454,9 +472,9 @@ class ClickableCard extends StatelessWidget {
                 ),
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 15,
-                    color: Colors.black,
+                    color: isOwner ? Colors.black : Colors.grey,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

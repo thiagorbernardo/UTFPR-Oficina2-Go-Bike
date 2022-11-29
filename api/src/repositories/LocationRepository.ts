@@ -9,7 +9,6 @@ export type ILocation = {
   latitude: number,
   longitude: number,
   velocity: number,
-  precision: number,
 };
 
 
@@ -19,7 +18,6 @@ const WorkRegisterSchema: Schema = new Schema({
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
   velocity: { type: Number, required: true },
-  precision: { type: Number, required: true }
 }, {
   timestamps: true,
   _id: false,
@@ -33,14 +31,13 @@ const WorkRegisterModel = mongoose.model<ILocation & Document>(CollectionModels.
 export class LocationRepository {
   protected model = WorkRegisterModel;
 
-  public async createRegister({ bikeId, latitude, longitude, velocity, precision }: Omit<Partial<ILocation>, "_id">) {
+  public async createRegister({ bikeId, latitude, longitude, velocity }: Omit<Partial<ILocation>, "_id">) {
     return await this.model.create({
       _id: uuidv4(),
       bikeId,
       latitude,
       longitude,
       velocity,
-      precision,
     });
   }
 

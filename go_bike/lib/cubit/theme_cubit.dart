@@ -7,26 +7,28 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 part 'theme_state.dart';
 
 class ThemeCubit extends HydratedCubit<ThemeState> {
-  ThemeCubit() : super(ThemeState(AppThemes.darkTheme, true));
+  ThemeCubit() : super(ThemeState(AppThemes.darkTheme, true, false));
 
   @override
   ThemeState? fromJson(Map<String, dynamic> json) {
     ThemeData theme =
         json['isDark'] as bool ? AppThemes.darkTheme : AppThemes.lightTheme;
 
-    return ThemeState(theme, json['isOwner'] as bool);
+    return ThemeState(
+        theme, json['isOwner'] as bool, json['bikeState'] as bool);
   }
 
   @override
   Map<String, bool>? toJson(ThemeState state) {
     return {
       'isDark': state.themeData.brightness == Brightness.dark,
-      'isOwner': state.isOwner
+      'isOwner': state.isOwner,
+      'bikeState': state.bikeState || false,
     };
   }
 
   void toggleOwnership() async {
-    emit(ThemeState(state.themeData, !state.isOwner));
+    emit(ThemeState(state.themeData, !state.isOwner, state.bikeState));
     await subscribeIfNeeded();
   }
 
@@ -38,5 +40,11 @@ class ThemeCubit extends HydratedCubit<ThemeState> {
       await FirebaseMessaging.instance.unsubscribeFromTopic("bike_owner");
       print("UNSUBSCRIBED TO BIKE_OWNER TOPIC");
     }
+  }
+
+  bool get isParked => state.bikeState & state.isOwner;
+
+  set isParked(bool value) {
+    emit(ThemeState(state.themeData, state.isOwner, value));
   }
 }

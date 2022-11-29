@@ -24,7 +24,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  requestAndRegisterNotification();
+
   // Storage
   await Hive.initFlutter();
 
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
+          requestAndRegisterNotification(context);
           context.read<ThemeCubit>().subscribeIfNeeded();
           return MaterialApp(
             title: 'Go Bike',

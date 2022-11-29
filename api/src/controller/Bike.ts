@@ -5,6 +5,7 @@ import {
 
 import { BikeService, BikeTopics, BIKE_MESSAGES } from '../service';
 
+let BIKE_STATE = 0;
 
 export class BikeController {
     public static async toggleBikeParking(req: Request, res: Response) {
@@ -29,7 +30,7 @@ export class BikeController {
             return res.status(StatusCodes.NOT_FOUND).end();
         }
 
-        return res.status(StatusCodes.OK).send(location);
+        return res.status(StatusCodes.OK).send({...location, state: Boolean(BIKE_STATE)});
     }
 
     public static async handleMqttMessage(topic: string, message: Buffer) {
@@ -39,22 +40,26 @@ export class BikeController {
         const service = new BikeService();
 
         if (topic === BikeTopics.LOCATION) {
-            const pattern = /LT:(.+),LN:(.+),V:(.+),P:(.+)/gi;
+            const pattern = /LT:(.+),LN:(.+),V:(.+)/gi;
             const match = pattern.exec(value);
             const lat = match?.[1];
             const lng = match?.[2];
             const velocity = match?.[3];
-            const precision = match?.[4];
 
-            if(!lat || !lng || !velocity || !precision) {
+            if (!lat || !lng || !velocity) {
                 console.error('Invalid message');
                 return;
                 // throw new Error('Invalid message');
             }
-            await service.saveBikeLocation(lat, lng, velocity, precision);
+            await service.saveBikeLocation(lat, lng, velocity);
         } else if (topic === BikeTopics.WARNING) {
             console.log(Boolean(value));
             await service.sendNotificationToDevice(BIKE_MESSAGES.WARNING_MOVING_BIKE_TITLE, BIKE_MESSAGES.WARNING_MOVING_BIKE_BODY);
+        } else if (topic === BikeTopics.WARNING_STATE) {
+            const oldState = BIKE_STATE;
+            const newState = +value;
+            BIKE_STATE = +value;
+            await service.notifyParking(oldState, newState);
         }
     }
 }

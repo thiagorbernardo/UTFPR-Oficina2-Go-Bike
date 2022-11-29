@@ -5,8 +5,8 @@ import 'package:go_bike/models/bike_location.dart';
 class ApiProvider {
   final Dio _api = Dio(
     BaseOptions(
-      // baseUrl: dotenv.env['API_URL']!,
-      baseUrl: "http://10.0.2.2:4000/api",
+      baseUrl: dotenv.env['API_URL']!,
+      // baseUrl: "http://10.0.2.2:4000/api",
     ),
   );
 
@@ -19,9 +19,9 @@ class ApiProvider {
     return location;
   }
 
-  Future<void> parkBike(String bikeId) async {
+  Future<void> parkBike(String bikeId, bool state) async {
     await _api.post<dynamic>("/bike/$bikeId/park", data: {
-      "value": true,
+      "value": state,
     });
   }
 }

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:go_bike/cubit/theme_cubit.dart';
-import 'package:go_bike/data/bloc/user/user_bloc.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
-
-import 'package:go_bike/ui/app_bar/bottom_bar.dart';
-import 'package:go_bike/utils/app_colors.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+
+import 'package:go_bike/cubit/theme_cubit.dart';
+import 'package:go_bike/data/bloc/user/user_bloc.dart';
+import 'package:go_bike/ui/app_bar/bottom_bar.dart';
+import 'package:go_bike/utils/app_colors.dart';
 
 Future<Position> _determinePosition() async {
   bool serviceEnabled;
@@ -57,6 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     BlocProvider.of<UserBloc>(context).add(GetLastlocation());
     _getUserLocation();
+
+    Timer.periodic(const Duration(seconds: 5), (timer) {
+      BlocProvider.of<UserBloc>(context).add(GetLastlocation());
+      print('Buscando localização');
+    });
   }
 
   void _getUserLocation() async {
@@ -133,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                 ];
+                mapController.move(state.location.location, 16);
                 setState(() {});
               }
             },
@@ -292,25 +299,17 @@ class ColumnRowWidget extends StatelessWidget {
                     Row(
                       children: [
                         ClickableCard(
-                          title: "Estacionar",
+                          title: context.read<ThemeCubit>().isParked
+                              ? "Desestacionar"
+                              : "Estacionar",
                           color: Colors.deepPurple.shade800,
                           icon: FontAwesomeIcons.squareParking,
                           onTap: context.read<ThemeCubit>().state.isOwner
                               ? () => {
-                                    BlocProvider.of<UserBloc>(context)
-                                        .add(ParkBike()),
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        backgroundColor: AppColors.secondary,
-                                        content: Text(
-                                          'Sucesso!',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    BlocProvider.of<UserBloc>(context).add(
+                                        ParkBike(!context
+                                            .read<ThemeCubit>()
+                                            .isParked)),
                                   }
                               : null,
                         ),

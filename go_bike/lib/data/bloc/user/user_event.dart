@@ -13,6 +13,9 @@ class Connect extends UserEvent {
 }
 
 class ParkBike extends UserEvent {
+  final bool state;
+
+  const ParkBike(this.state);
   @override
   List<Object> get props => [];
 }

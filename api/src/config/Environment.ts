@@ -26,9 +26,9 @@ const firebase = {
 const mqtt: MQTT.IClientOptions = {
     host: process.env.MQTT_HOST!,
     port: +process.env.MQTT_PORT!,
-    protocol: "mqtts",
-    username: process.env.MQTT_USER!,
-    password: process.env.MQTT_PASSWD!,
+    protocol: "mqtt",
+    // username: process.env.MQTT_USER!,
+    // password: process.env.MQTT_PASSWD!,
     clientId: process.env.MQTT_CLIENT_ID!
 }
 

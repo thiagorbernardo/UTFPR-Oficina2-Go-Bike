@@ -22,7 +22,8 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<ParkBike>((event, emit) async {
       try {
         emit(ParkBikeLoadingState());
-        await _repository.parkBike("123");
+        print("park: ${event.state}");
+        await _repository.parkBike("123", event.state);
         emit(ParkBikeLoadedState());
       } catch (e) {
         emit(ParkBikeErrorState());

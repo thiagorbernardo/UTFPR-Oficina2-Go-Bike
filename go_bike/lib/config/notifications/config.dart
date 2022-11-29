@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_bike/cubit/theme_cubit.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -15,8 +16,37 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Handling a background message: ${message.messageId}");
 }
 
-Future<void> _firebaseMessagingHandler(RemoteMessage message) async {
+Future<void> _firebaseMessagingHandler(
+    RemoteMessage message, BuildContext context) async {
   if (message.notification != null) {
+    if (message.notification!.body == "1") {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: Random().nextInt(9999),
+          channelKey: 'basic_channel',
+          title: message.notification!.title,
+          criticalAlert: true,
+          displayOnBackground: true,
+          displayOnForeground: true,
+        ),
+      );
+      context.read<ThemeCubit>().isParked = true;
+      return;
+    } else if (message.notification!.body == "0") {
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: Random().nextInt(9999),
+          channelKey: 'basic_channel',
+          title: message.notification!.title,
+          criticalAlert: true,
+          displayOnBackground: true,
+          displayOnForeground: true,
+        ),
+      );
+      context.read<ThemeCubit>().isParked = false;
+      return;
+    }
+
     print('Message contained a notification: ${message.notification!.body}');
 
     AwesomeNotifications().createNotification(
@@ -33,7 +63,7 @@ Future<void> _firebaseMessagingHandler(RemoteMessage message) async {
   }
 }
 
-void requestAndRegisterNotification() async {
+void requestAndRegisterNotification(BuildContext context) async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   NotificationSettings settings = await messaging.requestPermission(
@@ -77,5 +107,6 @@ void requestAndRegisterNotification() async {
   }
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessage.listen(_firebaseMessagingHandler);
+  FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) => _firebaseMessagingHandler(message, context));
 }

@@ -6,13 +6,15 @@ import { client } from '../index';
 export enum BikeTopics {
     PARK = 'bike/park',
     LOCATION = 'bike/location',
-    WARNING = 'bike/warning'
+    WARNING = 'bike/warning',
+    WARNING_STATE = 'bike/warning/state'
 }
 
 export const BIKE_MESSAGES = {
     WARNING_MOVING_BIKE_TITLE: "⚠️Sua bicicleta saiu do lugar em que foi estacionada!⚠️",
     WARNING_MOVING_BIKE_BODY: "Sua bicicleta saiu do lugar em que estava antes.",
     PARKED_BIKE_TITLE: "Bicicleta estacionada com sucesso!🆗",
+    UNPARKED_BIKE_TITLE: "Bicicleta desestacionada com sucesso!🆗",
 }
 
 const BIKE_ID = '123'
@@ -35,9 +37,8 @@ export class BikeService {
     }
 
     public async toggleBikeParking(bikeId: string, value: boolean) {
-        console.log("Parking", bikeId, value);
-        await client.publish(BikeTopics.PARK, `${value}`);
-        await this.sendNotificationToDevice(BIKE_MESSAGES.PARKED_BIKE_TITLE);
+        console.log("Parking", bikeId, `${+value}`);
+        await client.publish(BikeTopics.PARK, `${+value}`);
     }
 
     public async getBikeLastLocation(bikeId: string): Promise<ILocation | null> {
@@ -46,14 +47,21 @@ export class BikeService {
         return location;
     }
 
-    public async saveBikeLocation(lat: string, lng: string, velocity: string, precision: string) {
-        console.log(lat, lng, velocity, precision);
+    public async saveBikeLocation(lat: string, lng: string, velocity: string) {
+        console.log(lat, lng, velocity);
         await this.locationRepository.createRegister({
             bikeId: BIKE_ID,
             latitude: parseFloat(lat),
             longitude: parseFloat(lng),
             velocity: parseFloat(velocity),
-            precision: parseFloat(precision)
         });
+    }
+
+    public async notifyParking(oldState: number, newState: number) {
+        if (oldState === 0 && newState === 1) {
+            await this.sendNotificationToDevice(BIKE_MESSAGES.PARKED_BIKE_TITLE, `${newState}`);
+        } else if (oldState === 1 && newState === 0) {
+            await this.sendNotificationToDevice(BIKE_MESSAGES.UNPARKED_BIKE_TITLE, `${newState}`);
+        }
     }
 }

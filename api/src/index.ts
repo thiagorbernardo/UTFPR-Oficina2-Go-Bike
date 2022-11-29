@@ -37,6 +37,7 @@ client.on("connect", async () => {
 
   subscribeMQTT(BikeTopics.LOCATION);
   subscribeMQTT(BikeTopics.WARNING);
+  subscribeMQTT(BikeTopics.WARNING_STATE);
 });
 
 app.listen(Environment.node.port, async () => {

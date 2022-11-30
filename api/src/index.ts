@@ -8,7 +8,7 @@ import AppRoutes from './routes';
 import { BikeTopics } from './service';
 import { BikeController } from './controller';
 import Environment from './config/Environment';
-import { connectDatabase } from './server';
+import { connectDatabase, exposeServer } from './server';
 
 initializeApp({
   credential: admin.credential.cert(Environment.firebase as any)
@@ -31,18 +31,20 @@ const subscribeMQTT = async (topic: string) => {
   }
 };
 
-client.on("connect", async () => {
-  console.info("Connected to MQTT broker");
-  client.on('message', BikeController.handleMqttMessage);
-
-  subscribeMQTT(BikeTopics.LOCATION);
-  subscribeMQTT(BikeTopics.WARNING);
-  subscribeMQTT(BikeTopics.WARNING_STATE);
-});
-
 app.listen(Environment.node.port, async () => {
   try {
     await connectDatabase();
+    // await exposeServer();
+
+    client.on("connect", async () => {
+      console.info("Connected to MQTT broker");
+      client.on('message', BikeController.handleMqttMessage);
+    
+      subscribeMQTT(BikeTopics.LOCATION);
+      subscribeMQTT(BikeTopics.WARNING);
+      subscribeMQTT(BikeTopics.WARNING_STATE);
+    });
+    
     console.log(`⚡️[server]: Server is running at http://localhost:${Environment.node.port}`);
   } catch (error) {
     console.error(error)

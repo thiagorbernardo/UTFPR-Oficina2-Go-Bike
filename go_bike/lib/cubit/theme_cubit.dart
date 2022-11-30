@@ -3,19 +3,19 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:go_bike/config/theme.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:go_bike/config/globals.dart' as globals;
 
 part 'theme_state.dart';
 
 class ThemeCubit extends HydratedCubit<ThemeState> {
-  ThemeCubit() : super(ThemeState(AppThemes.darkTheme, true, false));
+  ThemeCubit() : super(ThemeState(AppThemes.darkTheme, true));
 
   @override
   ThemeState? fromJson(Map<String, dynamic> json) {
     ThemeData theme =
         json['isDark'] as bool ? AppThemes.darkTheme : AppThemes.lightTheme;
 
-    return ThemeState(
-        theme, json['isOwner'] as bool, json['bikeState'] as bool);
+    return ThemeState(theme, json['isOwner'] as bool);
   }
 
   @override
@@ -23,12 +23,11 @@ class ThemeCubit extends HydratedCubit<ThemeState> {
     return {
       'isDark': state.themeData.brightness == Brightness.dark,
       'isOwner': state.isOwner,
-      'bikeState': state.bikeState || false,
     };
   }
 
   void toggleOwnership() async {
-    emit(ThemeState(state.themeData, !state.isOwner, state.bikeState));
+    emit(ThemeState(state.themeData, !state.isOwner));
     await subscribeIfNeeded();
   }
 
@@ -42,9 +41,5 @@ class ThemeCubit extends HydratedCubit<ThemeState> {
     }
   }
 
-  bool get isParked => state.bikeState & state.isOwner;
-
-  set isParked(bool value) {
-    emit(ThemeState(state.themeData, state.isOwner, value));
-  }
+  bool get isParked => globals.bikeState & state.isOwner;
 }

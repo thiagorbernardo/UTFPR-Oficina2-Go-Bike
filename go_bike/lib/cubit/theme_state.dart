@@ -4,10 +4,9 @@ part of 'theme_cubit.dart';
 class ThemeState extends Equatable {
   final ThemeData themeData;
   final bool isOwner;
-  final bool bikeState;
 
-  const ThemeState(this.themeData, this.isOwner, this.bikeState);
+  const ThemeState(this.themeData, this.isOwner);
 
   @override
-  List<Object?> get props => [themeData, isOwner, bikeState];
+  List<Object?> get props => [themeData, isOwner];
 }

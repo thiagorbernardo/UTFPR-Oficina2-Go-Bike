@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:go_bike/data/repository/api_provider.dart';
 import 'package:go_bike/models/bike_location.dart';
-import 'package:latlong2/latlong.dart';
 
 part 'user_event.dart';
 part 'user_state.dart';

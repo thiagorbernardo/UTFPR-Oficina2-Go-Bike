@@ -42,10 +42,24 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final String initialRoute;
 
   const MyApp({Key? key, required this.initialRoute}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      requestAndRegisterNotification(context);
+      print("REGISTERING NOTIFICATIONS");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +71,11 @@ class MyApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {
-          requestAndRegisterNotification(context);
           context.read<ThemeCubit>().subscribeIfNeeded();
           return MaterialApp(
             title: 'Go Bike',
             theme: state.themeData,
-            initialRoute: initialRoute,
+            initialRoute: widget.initialRoute,
             routes: Routes.routes,
             debugShowCheckedModeBanner: false,
             locale: const Locale('pt', 'BR'),

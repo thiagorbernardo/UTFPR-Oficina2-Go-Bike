@@ -13,6 +13,7 @@ import 'package:go_bike/cubit/theme_cubit.dart';
 import 'package:go_bike/data/bloc/user/user_bloc.dart';
 import 'package:go_bike/ui/app_bar/bottom_bar.dart';
 import 'package:go_bike/utils/app_colors.dart';
+import 'package:go_bike/config/globals.dart' as globals;
 
 Future<Position> _determinePosition() async {
   bool serviceEnabled;
@@ -212,6 +213,10 @@ class ColumnRowWidget extends StatelessWidget {
           previous is GetLastLocationLoadingState &&
           current is GetLastLocationLoadedState,
       builder: (context, state) {
+        print("GET LOCATION - BIKE STATE ${globals.bikeState}");
+        String parkedText = context.read<ThemeCubit>().isParked
+            ? "Desestacionar"
+            : "Estacionar";
         if (state is GetLastLocationLoadedState) {
           double distance = Geolocator.distanceBetween(
                   userLocation.latitude,
@@ -299,17 +304,13 @@ class ColumnRowWidget extends StatelessWidget {
                     Row(
                       children: [
                         ClickableCard(
-                          title: context.read<ThemeCubit>().isParked
-                              ? "Desestacionar"
-                              : "Estacionar",
+                          title: parkedText,
                           color: Colors.deepPurple.shade800,
                           icon: FontAwesomeIcons.squareParking,
                           onTap: context.read<ThemeCubit>().state.isOwner
                               ? () => {
-                                    BlocProvider.of<UserBloc>(context).add(
-                                        ParkBike(!context
-                                            .read<ThemeCubit>()
-                                            .isParked)),
+                                    BlocProvider.of<UserBloc>(context)
+                                        .add(ParkBike(!globals.bikeState)),
                                   }
                               : null,
                         ),

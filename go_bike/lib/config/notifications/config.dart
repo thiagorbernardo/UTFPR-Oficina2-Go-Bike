@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_bike/cubit/theme_cubit.dart';
+import 'package:go_bike/config/globals.dart' as globals;
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -30,7 +29,7 @@ Future<void> _firebaseMessagingHandler(
           displayOnForeground: true,
         ),
       );
-      context.read<ThemeCubit>().isParked = true;
+      globals.bikeState = true;
       return;
     } else if (message.notification!.body == "0") {
       AwesomeNotifications().createNotification(
@@ -43,7 +42,7 @@ Future<void> _firebaseMessagingHandler(
           displayOnForeground: true,
         ),
       );
-      context.read<ThemeCubit>().isParked = false;
+      globals.bikeState = false;
       return;
     }
 

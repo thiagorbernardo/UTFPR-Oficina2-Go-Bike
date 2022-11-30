@@ -14,7 +14,7 @@ export class BikeController {
 
         const service = new BikeService();
 
-        await service.toggleBikeParking(bikeId, value);
+        await service.toggleBikeParking(bikeId, !Boolean(BIKE_STATE));
 
         return res.status(StatusCodes.CREATED).end();
     }

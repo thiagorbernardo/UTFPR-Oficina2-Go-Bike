@@ -59,9 +59,9 @@ export class BikeService {
 
     public async notifyParking(oldState: number, newState: number) {
         if (oldState === 0 && newState === 1) {
-            await this.sendNotificationToDevice(BIKE_MESSAGES.PARKED_BIKE_TITLE, `${newState}`);
+            await this.sendNotificationToDevice(BIKE_MESSAGES.PARKED_BIKE_TITLE, `1`);
         } else if (oldState === 1 && newState === 0) {
-            await this.sendNotificationToDevice(BIKE_MESSAGES.UNPARKED_BIKE_TITLE, `${newState}`);
+            await this.sendNotificationToDevice(BIKE_MESSAGES.UNPARKED_BIKE_TITLE, `0`);
         }
     }
 }

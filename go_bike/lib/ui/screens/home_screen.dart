@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   )
                 ];
-                mapController.move(state.location.location, 16);
+                // mapController.move(state.location.location, 16);
                 setState(() {});
               }
             },

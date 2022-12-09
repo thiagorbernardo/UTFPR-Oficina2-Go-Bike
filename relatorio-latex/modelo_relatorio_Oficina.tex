@@ -1,0 +1,245 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Template baseado no exemplo da classe utftex
+% Prof. César M. V. Benítez
+% DAELN, UTFPR-Curitiba (2019)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[openright]{normas-utf-tex} %openright = o capitulo comeca sempre em paginas impares
+%\documentclass[oneside]{normas-utf-tex} %oneside = para numero de paginas menor que 100 (apenas frente da folha) 
+
+% force A4 paper format
+\special{papersize=210mm,297mm}
+
+\usepackage[alf,abnt-emphasize=bf,bibjustif,recuo=0cm, abnt-etal-cite=2, abnt-etal-list=99]{abntcite} %configuracao correta das referencias bibliograficas.
+
+\usepackage[portuguese, ruled, linesnumbered]{algorithm2e}%pacotedealgoritmoemportugues
+
+\usepackage[brazil]{babel} % pacote portugues brasileiro
+\usepackage[utf8]{inputenc} % pacote para acentuacao direta
+\usepackage{amsmath,amsfonts,amssymb} % pacote matematico
+\usepackage{graphicx} % pacote grafico
+\usepackage{times} % fonte times
+\usepackage[final]{pdfpages} % adicao da ata
+\usepackage[version=3]{mhchem}%adição de pacote para quimica
+\usepackage{longtable}% redimensionar automaticamente tabelas
+%\usepackage{hyperref}% link das res
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+%Podem utilizar GEOMETRY{...} para realizar pequenos ajustes das margens. Onde, left=esquerda, right=direita, top=superior, bottom=inferior. P.ex.:
+%\geometry{left=3.0cm,right=1.5cm,top=4cm,bottom=1cm} 
+\usepackage{amsthm}
+\newtheorem{mydef}{Definicão}
+
+%\usepackage{balance} 
+
+
+
+% ---------- Preambulo ----------
+\instituicao{ UNIVERSIDADE TECNOLÓGICA FEDERAL DO PARANÁ (UTFPR)} % nome da instituicao
+\programa{Curso de Engenharia de Computação} % nome do programa
+\area{Engenharia de Computação} 
+\documento{Oficina de Integração 2 -- Relatório Final} % Oficina de Integração 1 ou 2
+\nivel{Graduação em Engenharia de Computação} 
+\titulacao{Graduação em Engenharia de Computação} 
+
+\titulo{Projeto GoBike} % titulo do trabalho em portugues
+\title{\MakeUppercase{GoBike Project}} % titulo do trabalho em ingles
+
+\autor{Frank Edmundo Huscher Bloemer \protect \\ João Lucas Mizuguchi Ferreira \\ \protect Thiago Ramos Bernardo} % autor do trabalho
+%\cita{aluno1} % sobrenome (maiusculas), nome do autor do trabalho
+
+
+\palavraschave{Ciclismo; Tecnologia; Rastreio; Segurança}  % palavras-chave do trabalho
+\keywords{Cycling; Technology; Tracking; Safety} % palavras-chave do trabalho em ingles
+
+\comentario{Relatório Final da disciplina Oficina de Integração 2,  % Oficina de integração 1 ou 2 
+do curso de Engenharia de Computação, 
+apresentado aos professores que ministram a 
+mesma na Universidade Tecnologica Federal do 
+Paraná como requisito parcial para obtenção da 
+aprovação na disciplina.} 
+
+\orientador{Prof. Dr. César Manuel Vargas Benítez \protect \\ 
+Prof. Dr. Daniel Rossato} % nome do orientador do trabalho
+
+
+
+\local{Curitiba} % cidade
+\data{\the\year} % ano automatico
+
+% desativa hifenizacao mantendo o texto justificado.
+% thanks to Emilio C. G. Wille
+\tolerance=1
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+\sloppy
+
+%---------- Inicio do Documento ----------
+\begin{document}
+
+\capa % geracao automatica da capa
+\folhaderosto % geracao automatica da folha de rosto
+
+
+% % dedicatoria (opcional)
+\begin{dedicatoria}
+% Texto da dedicat\'oria.
+Este trabalho é dedicado especialmente a nossas famílias, sem as quais nada disso seria possível.
+
+\end{dedicatoria}
+
+% % agradecimentos (opcional)
+\begin{agradecimentos}
+% Texto dos agradecimentos.
+Primeiramente, gostaríamos de agradecer a Deus pelas conquistas e bênçãos obtidas. Gostaríamos também de agradecer a nossas famílias e amigos, que nos motivaram, apoiaram e deram forças em todos os momentos em que mais precisamos. Por fim, somos imensamente gratos ao Sr. Rafael Juliani pela grande ajuda com a modelagem e impressão 3D presentes neste projeto.
+
+ \end{agradecimentos}
+
+% % epigrafe (opcional)
+% \begin{epigrafe}
+% Texto da ep\'igrafe.
+% \end{epigrafe}
+
+%resumo
+\begin{resumo}
+Este documento descreve o Go Bike, projeto realizado para a disciplina de Oficina de Integracão 2. O projeto tem como objetivo a construção de um sistema que possibilite uma melhor segurança para os ciclistas e suas bicicletas. O sistema é composto por um módulo instalado na bicicleta e um aplicativo para celular, que juntos fornecem informações sobre a localização de bicicletas do usuário e amigos, sendo possível compartilhar essa localização com amigos, estacionar a bicicleta em algum lugar e receber alertas via notificação caso ela saia do lugar. O aplicativo é desenvolvido em Flutter para Android e o módulo é em um ESP32. Foram usadas diversas bibliotecas para o desenvolvimento do projeto, como o MongoDB para o banco de dados, o Firebase para as notificações, o Open Street Map para a localização no aplicativo. Ao final do projeto foi possível atingir o objetivo proposto, com o módulo instalado na bicicleta sendo capaz de enviar informações para o aplicativo e com o aplicativo sendo capaz de receber essas informações e exibi-las ao usuário.
+\end{resumo}
+
+%abstract
+\begin{abstract}
+This document describes Go Bike, a project carried out for the subject of Oficina de Integracão 2. The project aims to build a system that provides better safety for cyclists and their bicycles. The system consists of a module installed on the bike and a mobile application, which together provide information about the location of the user's bikes and friends, making it possible to share this location with friends, park the bike somewhere and receive alerts via notification if she leaves the place. The application is developed in Flutter for Android and the module is in an ESP32. Several libraries were used for the development of the project, such as MongoDB for the database, Firebase for notifications, Open Street Map for the location in the application. At the end of the project, it was possible to achieve the proposed objective, with the module installed on the bicycle being able to send information to the application and with the application being able to receive this information and display it to the user. At the end of the project, it was possible to achieve the proposed objective, with the module installed on the bicycle being able to send information to the application and with the application being able to receive this information and display it to the user.
+\end{abstract}
+
+% listas (opcionais, mas recomenda-se a partir de 5 elementos)
+\listadefiguras % geracao automatica da lista de figuras
+\listadetabelas % geracao automatica da lista de tabelas
+%\listadequadros % adivinhe :)
+%\listadesiglas % geracao automatica da lista de siglas
+%\listadesimbolos % geracao automatica da lista de simbolos
+
+% sumario
+\sumario % geracao automatica do sumario
+
+
+%---------- Inicio do Texto ----------
+% recomenda-se a escrita de cada capitulo em um arquivo texto separado (exemplo: intro.tex, fund.tex, exper.tex, concl.tex, etc.) e a posterior inclusao dos mesmos no mestre do documento utilizando o comando \input{}, da seguinte forma:
+%\input{intro.tex}
+%\input{fund.tex}
+%\input{exper.tex}
+%\input{concl.tex}
+
+% Colocar aqui o numero da página inicial!!! (Obs.: conta a partir da folha de rosto)
+\setcounter{page}{12}
+
+
+
+\input{./capitulos/capitulo1}   %Introducao
+\input{./capitulos/capitulo2}   %Fundamentacao teorica
+\input{./capitulos/capitulo3}   %Metodologia
+\input{./capitulos/capitulo4}   %Experimentos e resultados
+\input{./capitulos/capitulo5}   %Cronograma e custos do projeto
+\input{./capitulos/capitulo6}   %Conclusoes e trabalhos futuros
+
+%---------- Referencias ----------
+%\clearpage % this is need for add +1 to pageref of bibstart used in 'ficha catalografica'.
+%\label{bibstart}
+%\bibliography{reflatex} % geracao automatica das referencias a partir do arquivo reflatex.bib
+%\label{bibend}
+\chapter{Referências}
+Guia Completo do Display OLED – O que é? Como funciona?. Blog Eletrogate, 2021. Disponível em: https://blog.eletrogate.com/guia-completo-do-display-oled-parte-1-o-que-e-como-funciona-2/. Acesso em: 05 de dezembro de 2022.
+
+ARQUITETURA DE TELAS TFT-LCD COM MICROCONTROLADORES E INTERFACES GRÁFICAS EM SISTEMAS EMBARCADOS. Repositório UTFPR, 2019. Disponível em: encurtador.com.br/bgosu. Acesso em: 06 de dezembro de 2022.
+
+Guide for I2C OLED Display with Arduino. Random Nerd Tutorials, 2016. Disponível em: https://randomnerdtutorials.com/guide-for-oled-display-with-arduino/. Acesso em: 07 de dezembro de 2022.
+
+Many different datasheets. DATAsheets, 2022. Disponível em: https://www.datasheets.com/en. Acesso em: 07 de dezembro de 2022.
+
+Documentação Flutter Firebase, 2022. Disponível em: https://firebase.google.com/docs/flutter/setup. Acesso em: 08 de outubro de 2022.
+
+Documentação Node JS, 2022. Disponível em: https://nodejs.org/en/docs/. Acesso em: 05 de outubro de 2022.
+
+Documentação Express JS, 2022. Disponível em: https://expressjs.com/pt-br/. Acesso em: 05 de outubro de 2022.
+
+Tutorial: Acelerômetro MPU6050 com Arduino, 2022. Disponível em: https://www.filipeflop.com/blog/tutorial-acelerometro-mpu6050-arduino/. Acesso em: 05 de outubro de 2014.
+
+Módulo GSM SIM800L, 2018. Disponível em: https://portal.vidadesilicio.com.br/modulo-gsm-sim800l/. Acesso em: 21 de setembro de 2022.
+
+GY-NEO6MV2 GPS Module Datasheet, 2022. Disponível em: https://s3-sa-east-1.amazonaws.com/multilogica-files/datasheets/GY-NEO6MV2-GPS-Module-Datasheet.pdf. Acesso em: 21 de setembro de 2022.
+
+Arduino GY-NEO6MV2 GPS Module c/w Antenna & Flight Control EEPROM, 2022. Disponível em: https://www.epitran.it/ebayDrive/datasheet/NEO6MV2.pdf. Acesso em: 21 de setembro de 2022.
+
+Controlando um display OLED com a biblioteca SSD1306, 2022. Disponível em: https://www.filipeflop.com/blog/controlando-um-display-oled-com-a-biblioteca-ssd1306/. Acesso em: 21 de setembro de 2022.
+
+How to use MQTT in Node.js, 2021. Disponível em: https://www.emqx.com/en/blog/how-to-use-mqtt-in-nodejs. Acesso em: 08 de outubro de 2022.
+
+ESP32 e MQTT DASH: controle e monitoramento através de um dashboard MQTT para Android, 2022. Disponível em: https://www.filipeflop.com/blog/esp32-e-mqtt-dashboard-android/. Acesso em: 21 de setembro de 2022.
+
+Documentação MongoDB, 2022. Disponível em: https://www.mongodb.com/docs/. Acesso em: 21 de setembro de 2022.
+
+Entenda o que é HTTP e o quão importante esse protocolo é para o seu site, 2022. Disponível em: https://rockcontent.com/br/blog/http/. Acesso em: 15 de novembro de 2022.
+
+
+% %---------- Apendices (opcionais) ----------
+% \apendice
+% \chapter{Nome do Ap\^endice}
+
+% Use o comando {\ttfamily \textbackslash apendice} e depois comandos {\ttfamily \textbackslash chapter\{\}}
+% para gerar t\'itulos de ap\^en-dices.
+
+
+% % ---------- Anexos (opcionais) ----------
+% \anexo
+% \chapter{Nome do Anexo}
+
+% Use o comando {\ttfamily \textbackslash anexo} e depois comandos {\ttfamily \textbackslash chapter\{\}}
+% para gerar t\'itulos de anexos.
+
+
+% --------- Ordenacao Afabetica da Lista de siglas --------
+%\textbf{* Observa\c{c}\~oes:} a ordenacao alfabetica da lista de siglas ainda nao eh realizada de forma automatica, porem
+% eh possivel se de realizar isto manualmente. Duas formas:
+%
+% ** Primeira forma)
+%    A ordenacao eh feita com o auxilio do comando 'sort', disponivel em qualquer
+% sistema Linux e UNIX, e tambem em sistemas Windows se instalado o coreutils (http://gnuwin32.sourceforge.net/packages/coreutils.htm)
+% comandos para compilar e ordenar, supondo que seu arquivo se chame 'dissertacao.tex':
+%
+%      $ latex dissertacao
+%      $ bibtex dissertacao && latex dissertacao
+%      $ latex dissertacao
+%      $ sort dissertacao.lsg > dissertacao.lsg.tmp
+%      $ mv dissertacao.lsg.tmp dissertacao.lsg
+%      $ latex dissertacao
+%      $ dvipdf dissertacao.dvi
+%
+%
+% ** Segunda forma)
+%\textbf{Sugest\~ao:} crie outro arquivo .tex para siglas e utilize o comando \sigla{sigla}{descri\c{c}\~ao}.
+%Para incluir este arquivo no final do arquivo, utilize o comando \input{arquivo.tex}.
+%Assim, Todas as siglas serao geradas na ultima pagina. Entao, devera excluir a ultima pagina da versao final do arquivo
+% PDF do seu documento.
+
+
+%-------- Citacoes ---------
+% - Utilize o comando \citeonline{...} para citacoes com o seguinte formato: Autor et al. (2011).
+% Este tipo de formato eh utilizado no comeco do paragrafo. P.ex.: \citeonline{autor2011}
+
+% - Utilize o comando \cite{...} para citacoeses no meio ou final do paragrafo. P.ex.: \cite{autor2011}
+
+
+
+%-------- Titulos com nomes cientificos (titulo, capitulos e secoes) ----------
+% Regra para escrita de nomes cientificos:
+% Os nomes devem ser escritos em italico, 
+%a primeira letra do primeiro nome deve ser em maiusculo e o restante em minusculo (inclusive a primeira letra do segundo nome).
+% VEJA os exemplos abaixo.
+% 
+% 1) voce nao quer que a secao fique com uppercase (caixa alta) automaticamente:
+%\section[nouppercase]{\MakeUppercase{Estudo dos efeitos da radiacao ultravioleta C e TFD em celulas de} {\textit{Saccharomyces boulardii}}
+%
+% 2) por padrao os cases (maiusculas/minuscula) sao ajustados automaticamente, voce nao precisa usar makeuppercase e afins.
+% \section{Introducao} % a introducao sera posta no texto como INTRODUCAO, automaticamente, como a norma indica.
+
+%\balance
+\end{document}

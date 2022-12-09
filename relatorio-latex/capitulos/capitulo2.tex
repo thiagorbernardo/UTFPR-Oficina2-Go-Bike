@@ -1,0 +1,32 @@
+\chapter{Fundamentação teórica}
+Com relação a fundamentação teórica do projeto, foram agrupados estudos sobre as tecnologias utilizadas no projeto a fim de quais delas era a mais recomendada para o escopo do projeto. Além disso, foram analizados vídeos, tutoriais e blogs com exemplos e aplicações dos componentes comprados [3], além de leituras minuciosas dos datasheets dos componentes utilizados [4], a fim de conhecer suas principais funcionalidades, requisitos e particularidades.
+
+\section{ESP32}
+O ESP32 é um microcontrolador de 32 bits com Wi-Fi e Bluetooth integrados, desenvolvido pela Espressif Systems. Ele é baseado no processador Tensilica Xtensa LX6 dual-core, com 2 núcleos de processamento, que opera a 240 MHz. Possui 520 KB de RAM e 4 MB de memória flash, além de suporte a Wi-Fi 802.11 b/g/n, Bluetooth 4.2 BR / EDR e BLE, além de capacidade de transmissão de dados de 150 Mbps e consumo de energia extremamente baixo. O ESP32 também possui uma porta USB OTG, que permite que ele seja conectado a um computador ou a um dispositivo móvel, o que o torna uma boa alternativa para o desenvolvimento de dispositivos IoT.
+
+\section{OLED}
+OLED é um tipo de display de cristal líquido que utiliza um painel de cristal líquido orgânico (OLED) para produzir imagens. Um OLED é formado por uma matriz de pixels que são controlados individualmente por um circuito integrado. Cada pixel pode ser desligado, ligado ou variar a intensidade da luz emitida, o que permite que a imagem seja exibida em preto e branco ou colorida. No projeto foi utilizado para apresentar a velocidade do usuário e feedbacks sobre a conexão MQTT do módulo.
+
+\section{GSM GPRS SIM800L}
+O SIM800L é um módulo GSM/GPRS de baixo custo que pode ser usado para comunicação de dados, chamadas telefônicas e SMS. O SIM800L é baseado no módulo SIM800C e possui um microcontrolador incorporado, que pode ser usado para enviar e receber mensagens SMS, fazer e receber chamadas telefônicas, enviar e receber dados, etc. No projeto foi inicialmente utilizado para atuar como \textit{hotspot} de internet do módulo.
+
+\section{GPS GY-NEO6MV2}
+O módulo GPS GY-NEO6MV2 é uma placa compacta indicada para projetos de navegação aérea ou terrestre com a finalidade de definir a geolocalização e fornecer os dados para uma plataforma microcontrolada, ela possui uma comunicação serial/TTL de 2 pinos (RX e TX) de 9600bps, funciona com 3.3V à 5V, possui uma antena embutida e tem precisão de 5m. A sua função no projeto é captar os valores da latitude, longitude e velocidade.
+
+\section{MPU6050}
+O MPU6050 é um sensor de aceleração e giroscópio de 6 eixos que fornece 9 eixos de medição (3 eixos de aceleração e 3 eixos de giroscópio) com um único sensor. No projeto foi utilizado para verificar se houve movimento enquanto a bicicleta está estacionada.
+
+\section{Flutter}
+Flutter é um kit de ferramentas de código aberto criado pelo Google. Ele é usado para desenvolver aplicativos para Android e iOS. Flutter usa o Dart como sua linguagem de programação principal. O Dart é uma linguagem de programação orientada a objetos desenvolvida pelo Google. Ele é compilado em código nativo e foi utilizado para desenvolver o aplicativo Go Bike em Android.
+
+\section{Firebase}
+Firebase é uma plataforma de desenvolvimento de aplicativos móveis e da Web, fornecida pela Google. Ele fornece recursos de armazenamento de dados, banco de dados, autenticação, mensagens em tempo real, notificações, análise e muito mais. O Firebase é usado para desenvolver aplicativos móveis e da Web modernos e escaláveis. No projeto foi utilizado o Firebase para enviar as notificações para o aplicativo. O aplicativo desenvolvido nesse projeto foi testado apenas em Android.
+
+\section{MongoDB}
+MongoDB é um banco de dados NoSQL orientado a documentos. Os documentos são armazenados em coleções, que são semelhantes a tabelas em um banco de dados relacional. Um documento é uma estrutura de dados que pode ser armazenada no MongoDB. Ele é composto por campos, que são agrupados em pares de chave-valor. Os documentos são semelhantes a objetos JSON. Foi utilizado para salvar as localizações do módulo Go Bike, contendo latitude, longitude e velocidade.
+
+\section{MQTT}
+MQTT é um protocolo de comunicação leve e de código aberto que pode ser usado para construir sistemas de Internet das Coisas (IoT). O MQTT é um protocolo de mensagens publicadas / assinadas, que significa que um cliente pode publicar uma mensagem em um tópico, e todos os clientes assinados para esse tópico receberão a mensagem. O MQTT é baseado em TCP / IP e usa o protocolo TCP para enviar mensagens. Foi utilizado no projeto para a comunicação entre o ESP32 e a API.
+
+\section{HTTP}
+O protocolo de transferência de hipertexto (HTTP) é um protocolo de aplicação de camada de apresentação usado para comunicação de dados entre clientes e servidores. Ele é usado para transferir documentos HTML, imagens, arquivos de vídeo, etc. entre um cliente e um servidor. O HTTP é baseado em solicitação / resposta. Foi utilizado no projeto para a comunicação entre o aplicativo e a API.

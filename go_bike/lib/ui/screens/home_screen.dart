@@ -214,10 +214,9 @@ class ColumnRowWidget extends StatelessWidget {
           current is GetLastLocationLoadedState,
       builder: (context, state) {
         print("GET LOCATION - BIKE STATE ${globals.bikeState}");
-        String parkedText = context.read<ThemeCubit>().isParked
-            ? "Desestacionar"
-            : "Estacionar";
+        String parkedText = "Estacionar";
         if (state is GetLastLocationLoadedState) {
+          parkedText = state.location.isParked ? "Desestacionar" : "Estacionar";
           double distance = Geolocator.distanceBetween(
                   userLocation.latitude,
                   userLocation.longitude,

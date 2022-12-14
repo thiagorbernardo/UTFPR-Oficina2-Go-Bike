@@ -5,12 +5,10 @@ import {
 
 import { BikeService, BikeTopics, BIKE_MESSAGES } from '../service';
 
-let BIKE_STATE = 0;
-
+let BIKE_STATE: number | null = null;
 export class BikeController {
     public static async toggleBikeParking(req: Request, res: Response) {
         const bikeId = req.params.id as string;
-        const { value } = req.body;
 
         const service = new BikeService();
 
@@ -56,6 +54,9 @@ export class BikeController {
             console.log(Boolean(value));
             await service.sendNotificationToDevice(BIKE_MESSAGES.WARNING_MOVING_BIKE_TITLE, BIKE_MESSAGES.WARNING_MOVING_BIKE_BODY);
         } else if (topic === BikeTopics.WARNING_STATE) {
+            if (BIKE_STATE === null) {
+                BIKE_STATE = +value;
+            }
             const oldState = BIKE_STATE;
             const newState = +value;
             BIKE_STATE = +value;

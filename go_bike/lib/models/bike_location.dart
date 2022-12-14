@@ -4,6 +4,7 @@ import 'package:geocoding/geocoding.dart';
 class BikeLocation {
   DateTime date;
   LatLng location;
+  bool isParked = false;
   late String mainAddress;
   late String subAddress;
 
@@ -14,7 +15,8 @@ class BikeLocation {
 
   BikeLocation.fromJson(Map<String, dynamic> json)
       : date = DateTime.parse(json['createdAt']),
-        location = LatLng(json['latitude'], json['longitude']);
+        location = LatLng(json['latitude'], json['longitude']),
+        isParked = json['state'];
 
   Future<void> setAddressFromLocation() async {
     List<Placemark> placemarks =

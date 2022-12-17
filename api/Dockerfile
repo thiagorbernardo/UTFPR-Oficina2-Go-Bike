@@ -8,7 +8,6 @@ COPY package*.json yarn*.lock ./
 
 USER node
 
-RUN npm install -g yarn
 RUN yarn install
 
 COPY --chown=node:node . .

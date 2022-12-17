@@ -1,25 +1,27 @@
 version: '3'
 
 services:
-  nodejs:
+  gobike-back:
     build:
       context: .
       dockerfile: Dockerfile
-    image: nodejs
-    container_name: nodejs
+    # image: nodejs
+    container_name: gobike-back
     restart: unless-stopped
     env_file: .env
-    environment:
-      - MONGO_USERNAME=$MONGO_USERNAME
-      - MONGO_PASSWORD=$MONGO_PASSWORD
-      - MONGO_HOSTNAME=db
-      - MONGO_PORT=$MONGO_PORT
-      - MONGO_DB=$MONGO_DB 
+    # environment:
     ports:
-      - "80:8080"
+      - "4000:4000"
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
     networks:
-      - app-network
-    command: ./wait-for.sh db:27017 -- /home/node/app/node_modules/.bin/nodemon app.js
+      - gobike-network
+    command: yarn dev
+
+networks:
+  gobike-network:
+    driver: bridge
+
+volumes:
+  node_modules:
